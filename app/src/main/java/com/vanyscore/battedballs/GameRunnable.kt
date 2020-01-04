@@ -1,8 +1,6 @@
 package com.vanyscore.battedballs
 
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PorterDuff
+import android.graphics.*
 import android.util.Log
 import android.view.SurfaceHolder
 
@@ -12,6 +10,7 @@ class GameRunnable(private val mainHolder : SurfaceHolder) : Runnable {
 
     init {
         gameObjects.add(FpsMonitor())
+        gameObjects.add(Borders())
     }
 
     override fun run() {

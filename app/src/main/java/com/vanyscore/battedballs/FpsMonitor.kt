@@ -3,7 +3,6 @@ package com.vanyscore.battedballs
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 
 class FpsMonitor : GameObject() {
 
@@ -13,8 +12,8 @@ class FpsMonitor : GameObject() {
     private val difference = 1000L
     private var canDraw = false
 
-    private var x = GameApp.parseIntoPx(20f)
-    private var y = GameApp.parseIntoPx(20f)
+    private var x = GameApp.parseIntoPx(40f)
+    private var y = GameApp.parseIntoPx(40f)
 
     private var paint : Paint = Paint().also {
         it.color = Color.YELLOW

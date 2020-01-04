@@ -1,5 +1,8 @@
 package com.vanyscore.battedballs
 
+import android.graphics.Point
+import android.graphics.Rect
+import android.graphics.RectF
 import android.view.SurfaceHolder
 
 class GameThreadController(holder : SurfaceHolder) : SurfaceHolder.Callback {

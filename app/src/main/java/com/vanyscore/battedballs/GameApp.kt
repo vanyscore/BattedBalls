@@ -21,5 +21,7 @@ class GameApp : Application() {
         fun parseIntoPx(dp : Float) : Float {
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics)
         }
+
+        fun getDisplayMetrics() : DisplayMetrics = displayMetrics
     }
 }

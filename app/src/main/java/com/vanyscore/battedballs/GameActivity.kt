@@ -5,13 +5,8 @@ import android.os.Bundle
 
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var gameSurfaceView: GameSurfaceView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        gameSurfaceView = GameSurfaceView(this)
-
-        setContentView(gameSurfaceView)
+        setContentView(R.layout.activity_main)
     }
 }
