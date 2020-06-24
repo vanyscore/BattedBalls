@@ -6,22 +6,26 @@ import android.util.TypedValue
 
 class GameApp : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-
-        displayMetrics = resources.displayMetrics
-    }
-
     companion object {
 
         const val DEBUG_KEY = "GameApp.debug"
 
-        private lateinit var displayMetrics: DisplayMetrics
+        lateinit var screenSize : Pair<Float, Float>
 
-        fun parseIntoPx(dp : Float) : Float {
-            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics)
+        var screenDensity : Float = 1f
+        var screenWidth : Float = 1f
+        var screenHeight : Float = 1f
+
+        fun parseIntoPx(value : Float) : Float {
+            return value * screenDensity
         }
 
-        fun getDisplayMetrics() : DisplayMetrics = displayMetrics
+        fun init(displayMetrics: DisplayMetrics) {
+            screenDensity = displayMetrics.density
+            screenWidth = displayMetrics.widthPixels.toFloat()
+            screenHeight = displayMetrics.heightPixels.toFloat()
+
+            screenSize = screenWidth to screenHeight
+        }
     }
 }
