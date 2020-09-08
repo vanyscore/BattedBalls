@@ -1,14 +1,16 @@
-package com.vanyscore.battedballs
+package com.vanyscore.battedballs.main
 
 import android.graphics.*
 import android.view.MotionEvent
 import android.view.SurfaceHolder
+import com.vanyscore.battedballs.*
 import com.vanyscore.battedballs.controllers.BallController
 import com.vanyscore.battedballs.controllers.PlatformController
 import com.vanyscore.battedballs.gameobjects.*
 
-class GameRunnable(private val mainHolder : SurfaceHolder) : Runnable,
-   Touchable {
+class GameRunnable(private val mainHolder : SurfaceHolder,
+                   finishListener : (isWon: Boolean) -> Unit) : Runnable,
+    Touchable {
 
     private val drawables : MutableList<Drawable> = mutableListOf()
     private val updatable : MutableList<Updatable> = mutableListOf()
@@ -16,7 +18,8 @@ class GameRunnable(private val mainHolder : SurfaceHolder) : Runnable,
 
     init {
         val fpsMonitor = FpsMonitor()
-        val ball = Ball(GameApp.screenWidth / 2f,
+        val ball = Ball(
+            GameApp.screenWidth / 2f,
             GameApp.screenHeight / 2f,
             20f)
 
@@ -27,8 +30,7 @@ class GameRunnable(private val mainHolder : SurfaceHolder) : Runnable,
         val borders = listOf(
             Border(RectF(0f, 0f, w, borderSize)),
             Border(RectF(0f, 0f, borderSize, h)),
-            Border(RectF(w - borderSize, 0f, w, h)),
-            Border(RectF(0f, h - borderSize * 2f, w, h))
+            Border(RectF(w - borderSize, 0f, w, h))
         )
 
         val array = Array(5) { Array(8) { 0 } }
@@ -37,15 +39,16 @@ class GameRunnable(private val mainHolder : SurfaceHolder) : Runnable,
         array[2] = arrayOf(0, 1, 1, 1, 1, 1, 0)
         array[3] = arrayOf(0, 0, 1, 1, 1, 0, 0)
         array[4] = arrayOf(0, 0, 1, 1, 1, 0, 0)
-        val blockMap = BlockMap(borderSize, array)
+        val blockMap = BlocksController(borderSize, array)
 
         val platform = Platform().apply {
             val width = (GameApp.screenWidth - borderSize * 2) / 4f
             val height = width / 4f
             val left = GameApp.screenWidth / 2f - width / 2f
             val right = left + width
-            val top = GameApp.screenHeight - borderSize * 4f
+            val top = GameApp.screenHeight - borderSize * 3f
             val bottom = top + height
+
             initRect(RectF(left, top, right, bottom))
         }
 
@@ -57,12 +60,12 @@ class GameRunnable(private val mainHolder : SurfaceHolder) : Runnable,
 
         val intersectList = mutableListOf<Intersectable>().apply {
             addAll(borders)
-            addAll(blockMap.getBlocks())
             add(platform)
         }
 
         updatable.add(fpsMonitor)
-        updatable.add(BallController(ball, intersectList))
+        updatable.add(BallController(ball, intersectList,
+            blockMap, finishListener))
 
         val platformController = PlatformController(platform, borders[1], borders[2])
 

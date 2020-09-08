@@ -7,15 +7,15 @@ import com.vanyscore.battedballs.GameApp
 import com.vanyscore.battedballs.Intersectable
 import com.vanyscore.battedballs.Updatable
 import com.vanyscore.battedballs.gameobjects.Ball
+import com.vanyscore.battedballs.gameobjects.BlocksController
 import com.vanyscore.battedballs.intersects
 
 class BallController(private val ball : Ball,
-                     private val borders : List<Intersectable>) : Updatable {
+                     private val barriers : List<Intersectable>,
+                     private val blocksController : BlocksController,
+                     private val finishListener : (isWon: Boolean) -> Unit) : Updatable {
 
-    private val diff = 1
-    private var lastTime = System.currentTimeMillis()
-
-    private val velocity = 10f
+    private val velocity = 15f
 
     private var vx : Float = velocity
     private var vy : Float = velocity
@@ -26,15 +26,22 @@ class BallController(private val ball : Ball,
         ball.x += vx
         ball.y += vy
 
+        if (ball.y >= GameApp.screenHeight)
+            finishListener(false)
+
         checkCollision()
     }
 
     private fun checkCollision() {
-        borders.map {
+        barriers.map {
             it.getRect()
         }.forEach { rect ->
             if (ball.getRect().intersects(rect))
-                return handleCollision(rect)
+                handleCollision(rect)
+        }
+
+        blocksController.handleCollision(ball, finishListener)?.also {
+            handleCollision(it.getRect())
         }
     }
 

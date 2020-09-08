@@ -1,11 +1,12 @@
-package com.vanyscore.battedballs
+package com.vanyscore.battedballs.main
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.View
 
-class GameThreadController(holder : SurfaceHolder) : SurfaceHolder.Callback,
+class GameThread(holder : SurfaceHolder,
+                 private val finishListener : (isWon: Boolean) -> Unit) : SurfaceHolder.Callback,
     View.OnTouchListener {
 
     private lateinit var gameThread : Thread
@@ -26,7 +27,7 @@ class GameThreadController(holder : SurfaceHolder) : SurfaceHolder.Callback,
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
-        gameThread = Thread(GameRunnable(holder).also {
+        gameThread = Thread(GameRunnable(holder, finishListener).also {
             this.gameRunnable = it
         }).also {
             it.start()

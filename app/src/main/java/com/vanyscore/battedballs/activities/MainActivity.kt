@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.vanyscore.battedballs.BuildConfig
 import com.vanyscore.battedballs.GameApp
 import com.vanyscore.battedballs.R
+import com.vanyscore.battedballs.RequestContainer
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +28,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         tv_start_game.setOnClickListener {
-            startActivity(Intent(this, GameActivity::class.java))
+            startActivityForResult(Intent(this, GameActivity::class.java),
+                RequestContainer.REQUEST_FINISH_GAME)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RequestContainer.REQUEST_FINISH_GAME) {
+            startActivity(Intent(this, FinishActivity::class.java).apply {
+                putExtra(RequestContainer.EXTRA_FINISH_STATE,
+                    resultCode == RequestContainer.RESULT_WON)
+            })
+        }
+    }
 }

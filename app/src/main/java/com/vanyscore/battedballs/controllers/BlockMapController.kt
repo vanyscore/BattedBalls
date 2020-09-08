@@ -1,10 +1,9 @@
 package com.vanyscore.battedballs.controllers
 
-import android.graphics.RectF
 import com.vanyscore.battedballs.Updatable
-import com.vanyscore.battedballs.gameobjects.BlockMap
+import com.vanyscore.battedballs.gameobjects.BlocksController
 
-class BlockMapController(private val blockMap : BlockMap) : Updatable {
+class BlockMapController(private val blocksController : BlocksController) : Updatable {
     override fun update() {
 
     }

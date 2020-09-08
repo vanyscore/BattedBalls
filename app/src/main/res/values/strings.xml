@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BattedBalls</string>
+    <string name="win">Победа</string>
+    <string name="defeat">Проигрыш</string>
 </resources>
